@@ -7,3 +7,5 @@
 .flow-visual{overflow:hidden}
 
 .visual-caption{bottom:0}
+
+textarea{width:100%;padding:12px;font:inherit;border:1px solid #c0bebf;border-radius:6px;resize:vertical;min-height:100px}textarea:focus-visible{outline:3px solid #73a89a;outline-offset:3px}.tool-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px}.tool-option{padding:18px;background:#f4efec;border-radius:8px}.tool-option h4{margin:0 0 10px;font-size:18px}.tool-option p{margin:10px 0}#match-status:not(:empty){padding:12px;background:#f4efec}
