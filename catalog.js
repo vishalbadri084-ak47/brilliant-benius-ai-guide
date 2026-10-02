@@ -14,5 +14,20 @@ const local=privacy==='private';
 const route=local?(device==='phone'?'Use redacted or synthetic input. A phone-only private-model route is not verified here. Do not upload sensitive content to a free cloud service.':'Use a local-only model through Ollama if your computer can run it. Disable cloud features, check hardware and test with synthetic data first.'):'Start with Google AI Studio for a text-model draft where its current free tier fits. Groq is an API alternative for developers, not a no-setup phone workflow. Verify eligibility and limits at the official pages.';
 return {task,route,blocked:local&&device==='phone',sources,checked};
 }
-const api={tasks,sources,recommend};if(typeof module!=='undefined')module.exports=api;root.Compass=api;
+const toolPlans={
+chatgpt:{name:'ChatGPT',free:'Free plan',freeFit:'Draft text, explain formulas or explore a coding brief with usage limits.',paid:'Plus',paidFit:'Consider when higher limits or expanded research and coding tools matter.',url:'https://chatgpt.com/pricing/',limit:'Cloud service. Paid does not mean private. Check current account, data controls and regional pricing.'},
+canva:{name:'Canva',free:'Canva Free',freeFit:'Build editable visual drafts with free content and limited AI access.',paid:'Canva Pro',paidFit:'Consider when premium assets, editing tools or a larger AI allowance matter.',url:'https://www.canva.com/en/pricing/',limit:'Premium assets and some AI features require payment. AI allowances remain limited.'},
+framer:{name:'Framer',free:'Free plan',freeFit:'Explore and prototype a site on a Framer domain. Intended for non-commercial use.',paid:'Basic / Pro',paidFit:'Consider a paid site plan for a custom domain or professional site needs.',url:'https://www.framer.com/pricing',limit:'Check commercial use, hosting limits, domain fees and add-ons before launch.'},
+perplexity:{name:'Perplexity',free:'Standard (Free)',freeFit:'Find sources with basic search and limited file / advanced search access.',paid:'Pro',paidFit:'Consider when advanced models, more research or file analysis access matter.',url:'https://www.perplexity.ai/help-center/en/articles/11187416-which-perplexity-subscription-plan-is-right-for-you',limit:'Open and verify cited pages. A citation is not proof that a claim is correct.'}
+};
+const optionMap={website:['chatgpt','framer'],research:['perplexity','chatgpt'],marketing:['chatgpt','canva'],spreadsheet:['chatgpt'],presentation:['chatgpt','canva']};
+const keywords={website:['website','web site','landing page','webpage','html','site','portfolio'],research:['research','sources','source','compare','comparison','investigate','report'],marketing:['marketing','campaign','advertisement','ad','ads','social media','post','caption','sales','promote','promotion'],spreadsheet:['spreadsheet','excel','csv','formula','formulas','data','analyze','analysis','calculations'],presentation:['presentation','slides','slide','deck','pitch','powerpoint','ppt']};
+function matchNeed(text){
+const clean=String(text||'').toLowerCase().replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();
+if(!clean)return {status:'empty',matches:[]};
+const matches=Object.keys(keywords).filter(id=>keywords[id].some(k=>(' '+clean+' ').includes(' '+k+' ')));
+return {status:matches.length===1?'matched':matches.length>1?'mixed':'unknown',matches};
+}
+function optionsFor(id){return (optionMap[id]||[]).map(k=>({...toolPlans[k],checked}));}
+const api={tasks,sources,recommend,matchNeed,optionsFor};if(typeof module!=='undefined')module.exports=api;root.Compass=api;
 })(typeof window==='undefined'?globalThis:window);
