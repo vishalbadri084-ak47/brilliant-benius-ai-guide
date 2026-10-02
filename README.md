@@ -1,6 +1,6 @@
 # Brilliant Benius
 
-![Brilliant Benius](concept-03.svg)
+![Brilliant Benius](brilliant-benius-logo.svg)
 
 Pick the right AI tool for the right task, like a genius. Use Brilliant Benius.
 
